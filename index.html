@@ -2,155 +2,164 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Student Guide Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f9f8f3;--ink:#111;--mut:#8f9280;--green:#41694b;--card:#fff;--sand:#f1dfc4;--sandink:#a58a5c;--amber:#b5762a;--edge:#ded8c6;--sub:#444;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171914;--ink:#f2efe6;--mut:#9a9d8a;--green:#6f9d7a;--card:#20231d;--sand:#3a3122;--sandink:#d2b785;--edge:#2c2f27;--sub:#b8b9aa}}
-:root[data-theme="dark"]{--bg:#171914;--ink:#f2efe6;--mut:#9a9d8a;--green:#6f9d7a;--card:#20231d;--sand:#3a3122;--sandink:#d2b785;--edge:#2c2f27;--sub:#b8b9aa}
 *{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Work Sans',system-ui,sans-serif;min-height:100vh}
-button{font:inherit;color:inherit;cursor:pointer}
-:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-.serif{font-family:'Playfair Display',Georgia,serif}
-header{display:flex;align-items:center;gap:16px;padding:16px 28px;border-bottom:3px solid var(--ink)}
-.brand{display:flex;align-items:center;gap:14px;background:none;border:0;text-align:left;padding:0}
-.logo{width:42px;height:42px;background:#41694b;color:#f9f8f3;display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:18px;flex:none}
+html{scroll-behavior:smooth}
+body{margin:0;background:#d9d6c8;color:#111;font-family:'Work Sans',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;gap:60px;padding:40px 0}
+a{color:inherit;text-decoration:none}
+.frame{width:1440px;height:1024px;display:flex;flex-direction:column;overflow:hidden;background:#f9f8f3;flex:none}
+header{display:flex;align-items:center;gap:16px;padding:16px 40px;border-bottom:3px solid #111;flex:none}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:42px;height:42px;background:#41694b;color:#f9f8f3;display:grid;place-items:center;font-family:'Playfair Display',serif;font-size:18px}
 .brand b{display:block;font-family:'Playfair Display',serif;font-weight:600;font-size:18px}
 .brand span{font-size:15px}
-.hsearch{margin-left:auto;border:1px solid var(--ink);background:var(--bg);color:var(--ink);padding:8px 14px;width:min(240px,40vw);font:inherit;font-size:14px}
-.avatar{width:42px;height:42px;border-radius:50%;border:2px solid var(--ink);background:none;display:grid;place-items:center;flex:none;padding:0}
-.avatar svg{width:26px;height:26px;fill:var(--ink)}
-.layout{display:flex;min-height:calc(100vh - 78px)}
-nav{width:200px;flex:none;border-right:3px solid var(--ink);padding:36px 0}
-nav h6{margin:0 0 12px 24px;font-size:14px;font-weight:600;color:var(--sub)}
-nav button{display:block;width:100%;text-align:left;background:none;border:0;border-left:5px solid transparent;padding:12px 24px;font-size:17px}
-nav button:hover{background:color-mix(in srgb,var(--card) 60%,transparent)}
-nav button.on{background:var(--card);border-left-color:var(--green)}
+.hsearch{margin-left:auto;border:1px solid #111;background:#f9f8f3;padding:8px 14px;width:240px;font:inherit;font-size:14px}
+.avatar{width:42px;height:42px;border-radius:50%;border:2px solid #111;display:grid;place-items:center}
+.avatar svg{width:26px;height:26px;fill:#111}
+.layout{display:flex;flex:1;min-height:0}
+nav{width:280px;flex:none;border-right:3px solid #111;padding:36px 0}
+nav h6{margin:0 0 12px 32px;font-size:14px;font-weight:600;color:#444}
+nav a{display:block;border-left:5px solid transparent;padding:12px 32px;font-size:17px}
+nav a.on{background:#fff;border-left-color:#41694b}
 nav .sp{height:28px}
-main{flex:1;padding:0 clamp(20px,6vw,90px);max-width:1000px}
-.eyebrow{color:var(--mut);font-family:'Playfair Display',serif;font-weight:700;font-size:20px;margin:0 0 10px}
-h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,42px);line-height:1.2;margin:0 0 30px}
-.pill{display:flex;align-items:center;border:1px solid var(--sub);border-radius:999px;background:var(--card);padding:0 8px 0 28px;height:64px;max-width:640px}
-.pill input{flex:1;border:0;background:none;font:inherit;font-size:18px;color:var(--ink);outline:0;min-width:0}
-.pill button{background:none;border:0;padding:10px;font-size:28px;line-height:1}
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0 6px}
-.chips button{border:1px solid var(--ink);background:none;border-radius:999px;padding:9px 22px;font-size:15px}
-.chips button:hover,.card:hover{background:color-mix(in srgb,var(--green) 12%,var(--card))}
-.note{margin:64px 0 0 8px;color:var(--sub);font-size:18px}
-.list{max-width:640px;margin-top:20px;display:flex;flex-direction:column;gap:10px}
-.card{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;text-align:left;border:1px solid var(--sub);background:var(--card);padding:18px 24px;width:100%}
+main{flex:1;padding:80px 120px}
+.eyebrow{color:#8f9280;font-family:'Playfair Display',serif;font-weight:700;font-size:20px;margin:0 0 10px}
+h1{font-family:'Playfair Display',serif;font-size:42px;line-height:1.2;margin:0 0 30px}
+.pill{display:flex;align-items:center;border:1px solid #444;border-radius:999px;background:#fff;padding:0 8px 0 28px;height:64px;width:640px}
+.pill input{flex:1;border:0;background:none;font:inherit;font-size:18px;outline:0}
+.pill a,.pill button{background:none;border:0;padding:10px;font-size:28px;line-height:1;cursor:pointer}
+.chips{display:flex;gap:10px;margin:22px 0 0 6px}
+.chips a{border:1px solid #111;border-radius:999px;padding:9px 22px;font-size:15px}
+.note{margin:64px 0 0 8px;color:#444;font-size:18px}
+.list{width:640px;margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.card{display:flex;justify-content:space-between;align-items:flex-start;border:1px solid #444;background:#fff;padding:18px 24px}
 .card h3{font-family:'Playfair Display',serif;font-size:22px;margin:0 0 20px}
-.card small{color:var(--mut);font-weight:600;font-size:16px}
-.tag{border:1px solid var(--sub);border-radius:999px;padding:3px 14px;font-size:14px;white-space:nowrap;margin-top:4px}
-.tag.open{background:color-mix(in srgb,var(--green) 18%,var(--card));border-color:var(--green)}
-.empty{color:var(--sub);margin-top:24px}
+.card small{color:#8f9280;font-weight:600;font-size:16px}
+.tag{border:1px solid #444;border-radius:999px;padding:3px 14px;font-size:14px;margin-top:4px}
+.tag.open{background:#e3ede5;border-color:#41694b}
 .loc{display:flex;align-items:center;gap:14px;font-size:20px;margin:0 0 30px}
-.dot{width:20px;height:20px;border-radius:50%;background:var(--amber)}
-.box{border:1px solid var(--sub);background:var(--card);padding:22px 24px;max-width:560px;font-size:20px;line-height:1.7;margin-bottom:34px}
-.guide{display:block;text-align:left;width:100%;max-width:560px;background:var(--sand);border:1px solid var(--sandink);padding:20px 24px;margin-bottom:26px;font-size:20px}
-.guide:hover{filter:brightness(.97)}
-.guide b{display:block;font-family:'Playfair Display',serif;color:var(--sandink);font-size:22px;margin-bottom:8px}
-.cta{background:#41694b;color:#fff;border:0;padding:18px 30px;font-size:22px}
-.cta:hover{background:#365a40}
-.steps{max-width:600px;padding:0;margin:0 0 30px;list-style:none;counter-reset:s}
-.steps li{counter-increment:s;display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--edge);font-size:18px}
-.steps li::before{content:counter(s);flex:none;width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:15px}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:14px 22px;max-width:90vw;font-size:15px}
-@media (max-width:720px){
- header{padding:12px 16px}.brand span{display:none}
- .layout{flex-direction:column}
- nav{width:100%;border-right:0;border-bottom:3px solid var(--ink);padding:12px 0;display:flex;overflow-x:auto}
- nav h6,nav .sp{display:none}
- nav button{width:auto;white-space:nowrap;border-left:0;border-bottom:4px solid transparent;padding:10px 16px}
- nav button.on{border-bottom-color:var(--green)}
- main{padding:0 20px}
-}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-nav{position:sticky;top:0;align-self:flex-start;height:calc(100vh - 78px);overflow-y:auto}
-main{min-width:0}
-section{min-height:calc(100vh - 78px);padding:56px 0;scroll-margin-top:0}
-section+section{border-top:1px dashed var(--edge)}
-@media (max-width:720px){nav{height:auto;z-index:5;background:var(--bg);top:0}section{min-height:0;scroll-margin-top:60px}}
+.dot{width:20px;height:20px;border-radius:50%;background:#b5762a}
+.box{border:1px solid #444;background:#fff;padding:22px 24px;width:560px;font-size:20px;line-height:1.7;margin-bottom:34px}
+.guide{display:block;width:560px;background:#f1dfc4;border:1px solid #a58a5c;padding:20px 24px;margin-bottom:26px;font-size:20px}
+.guide b{display:block;font-family:'Playfair Display',serif;color:#a58a5c;font-size:22px;margin-bottom:8px}
+.cta{display:inline-block;background:#41694b;color:#fff;padding:18px 30px;font-size:22px}
 </style>
 </head>
 <body>
-<header>
-  <button class="brand" onclick="goto('search')" aria-label="Student Guide Hub home"><span class="logo">SG</span><div><b>Student Guide Hub</b><span>Step by step help for school processes</span></div></button>
-  <input class="hsearch" id="hs" placeholder="Search a process…" aria-label="Search a process">
-  <button class="avatar" onclick="toast('Profile and sign-in are not part of this prototype.')" aria-label="Profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 23c0-6 4-9 10-9s10 3 10 9z"/></svg></button>
-</header>
-<div class="layout">
-  <nav id="nav"></nav>
-  <main>
-    <section id="search"></section>
-    <section id="results"></section>
-    <section id="detail"></section>
-    <section id="guide"></section>
-  </main>
-</div>
-<div class="toast" id="toast" hidden></div>
-<script>
-const CATS=['Enrollment','Scholarship','ID & Records','Clearance','Housing'];
-const OFFICES={
- fa:{name:'Scholarship & Financial Aid Office',short:'Bldg C, 2nd flr',room:'Building C, Room 204',hours:'Mon-Fri, 8:00am-5:00pm',phone:'(032) 555-0192',email:'finaid@cit.edu',open:true,cat:'Scholarship',guide:'Applying for a scholarship'},
- reg:{name:"Registrar's Office",short:'Bldg A, ground flr',room:'Building A, Room 101',hours:'Mon-Fri, 8:00am-4:30pm',phone:'(032) 555-0110',email:'registrar@cit.edu',cat:'Enrollment',guide:'Enrolling for the term'},
- fa2:{name:'Scholarship & Financial Aid Office',short:'Bldg B, 3rd flr',room:'Building B, Room 310',hours:'Mon-Fri, 9:00am-4:00pm',phone:'(032) 555-0193',email:'finaid.b@cit.edu',cat:'Scholarship',guide:'Applying for a scholarship'},
- id:{name:'ID & Records Desk',short:'Bldg A, 1st flr',room:'Building A, Room 112',hours:'Mon-Fri, 8:00am-5:00pm',phone:'(032) 555-0121',email:'records@cit.edu',cat:'ID & Records',guide:'Getting a student ID'},
- clr:{name:'Clearance Office',short:'Bldg D, 1st flr',room:'Building D, Room 105',hours:'Mon-Fri, 8:00am-5:00pm',phone:'(032) 555-0140',email:'clearance@cit.edu',cat:'Clearance',guide:'Getting your clearance signed'},
- hsg:{name:'Housing Office',short:'Bldg E, ground flr',room:'Building E, Room 001',hours:'Mon-Sat, 8:00am-5:00pm',phone:'(032) 555-0165',email:'housing@cit.edu',cat:'Housing',guide:'Applying for housing'}
-};
-const BYCAT={'Scholarship':['fa','reg','fa2'],'Enrollment':['reg','id'],'ID & Records':['id','reg'],'Clearance':['clr','reg'],'Housing':['hsg','reg']};
-const KW={Scholarship:['scholar','aid','grant','tuition','financ'],Enrollment:['enrol','enroll','register','subject','class'],'ID & Records':['id','record','transcript','tor','card'],Clearance:['clear','sign','graduat'],Housing:['hous','dorm','room','boarding']};
-const STEPS=['Check the scholarship types you qualify for and the deadline.','Get the application form from the Scholarship & Financial Aid Office.','Fill it out and attach your grades and a valid ID.','Get your adviser or dean to sign the form.','Submit everything to the office.','Wait for the notice by email, then confirm your slot.'];
-let st={cat:'Scholarship',q:'apply for scholarship',off:'fa'};
-const $=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function goto(id){$(id).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});history.replaceState(null,'','#'+id)}
-function findCat(q){q=q.toLowerCase();let b=null,n=0;for(const c in KW){const k=KW[c].filter(w=>q.includes(w)).length;if(k>n){n=k;b=c}}return b}
-function search(q){q=q.trim();if(!q)return;st.q=q;st.cat=findCat(q);const ids=st.cat?BYCAT[st.cat]:[];if(ids.length)st.off=ids[0];draw();goto('results')}
-function pickCat(c){st.cat=c;st.q='';st.off=BYCAT[c][0];draw();goto('results')}
-function pickOff(id){st.off=id;draw();goto('detail')}
 
-function draw(){
- const o=OFFICES[st.off];
- $('nav').innerHTML='<h6>Find an office</h6><button data-go="search">Search</button><div class="sp"></div><h6>Categories</h6>'+
-  CATS.map(c=>`<button class="${st.cat===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
- $('search').innerHTML=`<p class="eyebrow">Search</p><h1>What do you need help with?</h1>
-  <form class="pill" id="f"><input id="q" placeholder="Try “apply for scholarship”…" autocomplete="off" aria-label="What do you need help with"><button aria-label="Search">➜</button></form>
-  <div class="chips">${CATS.map(c=>`<button data-cat="${esc(c)}">${esc(c)}</button>`).join('')}</div>
-  <p class="note">Directory sourced from official school offices</p>`;
- $('f').onsubmit=e=>{e.preventDefault();search($('q').value)};
- const ids=st.cat?BYCAT[st.cat]:[];
- const label=st.q?`“${esc(st.q)}”…`:esc(st.cat||'');
- $('results').innerHTML=`<p class="eyebrow">Results</p>
-  <div class="pill"><input value="${label}" readonly aria-label="Current search"><button id="x" aria-label="Clear search">✕</button></div>
-  <div class="list">${ids.length?ids.map((id,i)=>{const f=OFFICES[id];return `<button class="card" data-off="${id}"><div><h3>${esc(f.name)}</h3><small>${esc(f.short)}</small></div><span class="tag ${i===0&&f.open?'open':''}">${i===0&&f.open?'Open now':'Related'}</span></button>`}).join(''):'<p class="empty">No offices match that yet. Try a category like Enrollment or Housing.</p>'}</div>
-  <p class="note" style="margin-top:36px">${st.q?'Sorted by relevance to your search':'Offices in this category'}</p>`;
- $('x').onclick=()=>{st.q='';st.cat=null;draw();goto('search')};
- $('detail').innerHTML=`<p class="eyebrow">Office detail</p><h1>${esc(o.name)}</h1>
-  <p class="loc"><span class="dot"></span>${esc(o.room)}</p>
-  <div class="box">${esc(o.hours)}<br><a href="tel:${o.phone.replace(/[^\d+]/g,'')}" style="color:inherit">${esc(o.phone)}</a> - <a href="mailto:${o.email}" style="color:inherit">${esc(o.email)}</a></div>
-  <button class="guide" data-guide="1"><b>Related Guide</b>${esc(o.guide)} - 6 steps</button>
-  <button class="cta" id="dir">Get directions</button>`;
- $('dir').onclick=()=>toast('Directions: head to '+o.room+'. Map view is not part of this prototype.');
- $('guide').innerHTML=`<p class="eyebrow">Guide</p><h1>${esc(o.guide)}</h1>
-  <ol class="steps">${STEPS.map(s=>`<li>${s}</li>`).join('')}</ol>
-  <button class="cta" data-go="detail">Back to office</button>`;
-}
-document.addEventListener('click',e=>{
- const t=e.target.closest('[data-go],[data-cat],[data-off],[data-guide]');if(!t)return;
- if(t.dataset.go)goto(t.dataset.go);
- else if(t.dataset.cat)pickCat(t.dataset.cat);
- else if(t.dataset.off)pickOff(t.dataset.off);
- else if(t.dataset.guide)goto('guide');
-});
-$('hs').addEventListener('keydown',e=>{if(e.key==='Enter'){search(e.target.value);e.target.value=''}});
-let tt;function toast(s){const t=$('toast');t.textContent=s;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,3500)}
-draw();
-</script>
+<!-- FRAME 1: SEARCH -->
+<div class="frame" id="search">
+  <header>
+    <a class="brand" href="#search"><span class="logo">SG</span><div><b>Student Guide Hub</b><span>Step by step help for school processes</span></div></a>
+    <input class="hsearch" placeholder="Search a process…">
+    <div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 23c0-6 4-9 10-9s10 3 10 9z"/></svg></div>
+  </header>
+  <div class="layout">
+    <nav>
+      <h6>Find an office</h6>
+      <a class="on" href="#search">Search</a>
+      <div class="sp"></div>
+      <h6>Categories</h6>
+      <a href="#results">Enrollment</a>
+      <a href="#results">Scholarship</a>
+      <a href="#results">ID &amp; Records</a>
+      <a href="#results">Clearance</a>
+      <a href="#results">Housing</a>
+    </nav>
+    <main>
+      <p class="eyebrow">Search</p>
+      <h1>What do you need help with?</h1>
+      <div class="pill">
+        <input placeholder="Try “apply for scholarship”…">
+        <a href="#results">➜</a>
+      </div>
+      <div class="chips">
+        <a href="#results">Enrollment</a>
+        <a href="#results">Scholarship</a>
+        <a href="#results">ID &amp; Records</a>
+        <a href="#results">Clearance</a>
+        <a href="#results">Housing</a>
+      </div>
+      <p class="note">Directory sourced from official school offices</p>
+    </main>
+  </div>
+</div>
+
+<!-- FRAME 2: RESULTS -->
+<div class="frame" id="results">
+  <header>
+    <a class="brand" href="#search"><span class="logo">SG</span><div><b>Student Guide Hub</b><span>Step by step help for school processes</span></div></a>
+    <input class="hsearch" placeholder="Search a process…">
+    <div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 23c0-6 4-9 10-9s10 3 10 9z"/></svg></div>
+  </header>
+  <div class="layout">
+    <nav>
+      <h6>Find an office</h6>
+      <a href="#search">Search</a>
+      <div class="sp"></div>
+      <h6>Categories</h6>
+      <a href="#results">Enrollment</a>
+      <a class="on" href="#results">Scholarship</a>
+      <a href="#results">ID &amp; Records</a>
+      <a href="#results">Clearance</a>
+      <a href="#results">Housing</a>
+    </nav>
+    <main>
+      <p class="eyebrow">Results</p>
+      <div class="pill">
+        <input value="“apply for scholarship”…" readonly>
+        <a href="#search">✕</a>
+      </div>
+      <div class="list">
+        <a class="card" href="#detail">
+          <div><h3>Scholarship &amp; Financial Aid Office</h3><small>Bldg C, 2nd flr</small></div>
+          <span class="tag open">Open now</span>
+        </a>
+        <a class="card" href="#detail">
+          <div><h3>Registrar’s Office</h3><small>Bldg A, ground flr</small></div>
+          <span class="tag">Related</span>
+        </a>
+        <a class="card" href="#detail">
+          <div><h3>Scholarship &amp; Financial Aid Office</h3><small>Bldg B, 3rd flr</small></div>
+          <span class="tag">Related</span>
+        </a>
+      </div>
+      <p class="note" style="margin-top:36px">Sorted by relevance to your search</p>
+    </main>
+  </div>
+</div>
+
+<!-- FRAME 3: OFFICE DETAIL -->
+<div class="frame" id="detail">
+  <header>
+    <a class="brand" href="#search"><span class="logo">SG</span><div><b>Student Guide Hub</b><span>Step by step help for school processes</span></div></a>
+    <input class="hsearch" placeholder="Search a process…">
+    <div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 23c0-6 4-9 10-9s10 3 10 9z"/></svg></div>
+  </header>
+  <div class="layout">
+    <nav>
+      <h6>Find an office</h6>
+      <a href="#search">Search</a>
+      <div class="sp"></div>
+      <h6>Categories</h6>
+      <a href="#results">Enrollment</a>
+      <a class="on" href="#results">Scholarship</a>
+      <a href="#results">ID &amp; Records</a>
+      <a href="#results">Clearance</a>
+      <a href="#results">Housing</a>
+    </nav>
+    <main>
+      <p class="eyebrow">Office detail</p>
+      <h1>Scholarship &amp; Financial Aid Office</h1>
+      <p class="loc"><span class="dot"></span>Building C, Room 204</p>
+      <div class="box">Mon-Fri, 8:00am-5:00pm<br>(032) 555-0192 - finaid@cit.edu</div>
+      <a class="guide" href="#detail"><b>Related Guide</b>Applying for a scholarship - 6 steps</a>
+      <a class="cta" href="#detail">Get directions</a>
+    </main>
+  </div>
+</div>
+
 </body>
 </html>
