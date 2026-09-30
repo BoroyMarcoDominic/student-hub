@@ -30,7 +30,7 @@ nav button{display:block;width:100%;text-align:left;background:none;border:0;bor
 nav button:hover{background:color-mix(in srgb,var(--card) 60%,transparent)}
 nav button.on{background:var(--card);border-left-color:var(--green)}
 nav .sp{height:28px}
-main{flex:1;padding:56px clamp(20px,6vw,90px);max-width:1000px}
+main{flex:1;padding:0 clamp(20px,6vw,90px);max-width:1000px}
 .eyebrow{color:var(--mut);font-family:'Playfair Display',serif;font-weight:700;font-size:20px;margin:0 0 10px}
 h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,42px);line-height:1.2;margin:0 0 30px}
 .pill{display:flex;align-items:center;border:1px solid var(--sub);border-radius:999px;background:var(--card);padding:0 8px 0 28px;height:64px;max-width:640px}
@@ -55,7 +55,6 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,42px);line-heig
 .guide b{display:block;font-family:'Playfair Display',serif;color:var(--sandink);font-size:22px;margin-bottom:8px}
 .cta{background:#41694b;color:#fff;border:0;padding:18px 30px;font-size:22px}
 .cta:hover{background:#365a40}
-.back{background:none;border:0;color:var(--sub);padding:0;margin-bottom:22px;font-size:15px;text-decoration:underline}
 .steps{max-width:600px;padding:0;margin:0 0 30px;list-style:none;counter-reset:s}
 .steps li{counter-increment:s;display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--edge);font-size:18px}
 .steps li::before{content:counter(s);flex:none;width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:15px}
@@ -67,19 +66,31 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,42px);line-heig
  nav h6,nav .sp{display:none}
  nav button{width:auto;white-space:nowrap;border-left:0;border-bottom:4px solid transparent;padding:10px 16px}
  nav button.on{border-bottom-color:var(--green)}
- main{padding:32px 20px}
+ main{padding:0 20px}
 }
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav{position:sticky;top:0;align-self:flex-start;height:calc(100vh - 78px);overflow-y:auto}
+main{min-width:0}
+section{min-height:calc(100vh - 78px);padding:56px 0;scroll-margin-top:0}
+section+section{border-top:1px dashed var(--edge)}
+@media (max-width:720px){nav{height:auto;z-index:5;background:var(--bg);top:0}section{min-height:0;scroll-margin-top:60px}}
 </style>
 </head>
 <body>
 <header>
-  <button class="brand" onclick="go('home')" aria-label="Student Guide Hub home"><span class="logo">SG</span><div><b>Student Guide Hub</b><span>Step by step help for school processes</span></div></button>
+  <button class="brand" onclick="goto('search')" aria-label="Student Guide Hub home"><span class="logo">SG</span><div><b>Student Guide Hub</b><span>Step by step help for school processes</span></div></button>
   <input class="hsearch" id="hs" placeholder="Search a process…" aria-label="Search a process">
   <button class="avatar" onclick="toast('Profile and sign-in are not part of this prototype.')" aria-label="Profile"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M2 23c0-6 4-9 10-9s10 3 10 9z"/></svg></button>
 </header>
 <div class="layout">
   <nav id="nav"></nav>
-  <main id="main"></main>
+  <main>
+    <section id="search"></section>
+    <section id="results"></section>
+    <section id="detail"></section>
+    <section id="guide"></section>
+  </main>
 </div>
 <div class="toast" id="toast" hidden></div>
 <script>
@@ -94,63 +105,52 @@ const OFFICES={
 };
 const BYCAT={'Scholarship':['fa','reg','fa2'],'Enrollment':['reg','id'],'ID & Records':['id','reg'],'Clearance':['clr','reg'],'Housing':['hsg','reg']};
 const KW={Scholarship:['scholar','aid','grant','tuition','financ'],Enrollment:['enrol','enroll','register','subject','class'],'ID & Records':['id','record','transcript','tor','card'],Clearance:['clear','sign','graduat'],Housing:['hous','dorm','room','boarding']};
-const STEPS=['Check the scholarship types you qualify for and the deadline.','Get the application form from the Scholarship & Financial Aid Office.','Fill it out and attach your grades and a valid ID.','Get your adviser or dean to sign the form.','Submit everything to the office, Bldg C, Room 204.','Wait for the notice by email, then confirm your slot.'];
-let st={view:'home',cat:null,q:'',off:null};
+const STEPS=['Check the scholarship types you qualify for and the deadline.','Get the application form from the Scholarship & Financial Aid Office.','Fill it out and attach your grades and a valid ID.','Get your adviser or dean to sign the form.','Submit everything to the office.','Wait for the notice by email, then confirm your slot.'];
+let st={cat:'Scholarship',q:'apply for scholarship',off:'fa'};
 const $=id=>document.getElementById(id);
-const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function goto(id){$(id).scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});history.replaceState(null,'','#'+id)}
+function findCat(q){q=q.toLowerCase();let b=null,n=0;for(const c in KW){const k=KW[c].filter(w=>q.includes(w)).length;if(k>n){n=k;b=c}}return b}
+function search(q){q=q.trim();if(!q)return;st.q=q;st.cat=findCat(q);const ids=st.cat?BYCAT[st.cat]:[];if(ids.length)st.off=ids[0];draw();goto('results')}
+function pickCat(c){st.cat=c;st.q='';st.off=BYCAT[c][0];draw();goto('results')}
+function pickOff(id){st.off=id;draw();goto('detail')}
 
-function go(view,p={}){st={view,cat:null,q:'',off:null,...p};history.pushState(st,'');render();window.scrollTo(0,0)}
-addEventListener('popstate',e=>{st=e.state||{view:'home',cat:null,q:'',off:null};render()});
-
-function findCat(q){q=q.toLowerCase();let best=null,n=0;for(const c in KW){const k=KW[c].filter(w=>q.includes(w)).length;if(k>n){n=k;best=c}}return best}
-function search(q){q=q.trim();if(!q)return;const c=findCat(q);go('results',{q,cat:c||null})}
-
-function render(){
- const n=$('nav'),active=st.view==='home'?'Search':st.cat;
- n.innerHTML='<h6>Find an office</h6><button class="'+(active==='Search'?'on':'')+'" data-go="home">Search</button><div class="sp"></div><h6>Categories</h6>'+
-  CATS.map(c=>`<button class="${active===c||(st.view==='detail'&&OFFICES[st.off].cat===c)?'on':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
- const m=$('main'),v=st.view;
- if(v==='home'){
-  m.innerHTML=`<p class="eyebrow">Search</p><h1>What do you need help with?</h1>
+function draw(){
+ const o=OFFICES[st.off];
+ $('nav').innerHTML='<h6>Find an office</h6><button data-go="search">Search</button><div class="sp"></div><h6>Categories</h6>'+
+  CATS.map(c=>`<button class="${st.cat===c?'on':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
+ $('search').innerHTML=`<p class="eyebrow">Search</p><h1>What do you need help with?</h1>
   <form class="pill" id="f"><input id="q" placeholder="Try “apply for scholarship”…" autocomplete="off" aria-label="What do you need help with"><button aria-label="Search">➜</button></form>
   <div class="chips">${CATS.map(c=>`<button data-cat="${esc(c)}">${esc(c)}</button>`).join('')}</div>
   <p class="note">Directory sourced from official school offices</p>`;
-  $('f').onsubmit=e=>{e.preventDefault();search($('q').value)};
- }else if(v==='results'){
-  const ids=st.cat?BYCAT[st.cat]:[];
-  const label=st.q?`“${esc(st.q)}”…`:esc(st.cat);
-  m.innerHTML=`<p class="eyebrow">Results</p>
-  <div class="pill" style="height:64px"><input value="${label.replace(/&quot;/g,'&quot;')}" readonly aria-label="Current search"><button id="x" aria-label="Clear search">✕</button></div>
-  <div class="list">${ids.length?ids.map((id,i)=>{const o=OFFICES[id];return `<button class="card" data-off="${id}"><div><h3>${esc(o.name)}</h3><small>${esc(o.short)}</small></div><span class="tag ${i===0&&o.open?'open':''}">${i===0&&o.open?'Open now':'Related'}</span></button>`}).join(''):'<p class="empty">No offices match that yet. Try a category like Enrollment or Housing.</p>'}</div>
+ $('f').onsubmit=e=>{e.preventDefault();search($('q').value)};
+ const ids=st.cat?BYCAT[st.cat]:[];
+ const label=st.q?`“${esc(st.q)}”…`:esc(st.cat||'');
+ $('results').innerHTML=`<p class="eyebrow">Results</p>
+  <div class="pill"><input value="${label}" readonly aria-label="Current search"><button id="x" aria-label="Clear search">✕</button></div>
+  <div class="list">${ids.length?ids.map((id,i)=>{const f=OFFICES[id];return `<button class="card" data-off="${id}"><div><h3>${esc(f.name)}</h3><small>${esc(f.short)}</small></div><span class="tag ${i===0&&f.open?'open':''}">${i===0&&f.open?'Open now':'Related'}</span></button>`}).join(''):'<p class="empty">No offices match that yet. Try a category like Enrollment or Housing.</p>'}</div>
   <p class="note" style="margin-top:36px">${st.q?'Sorted by relevance to your search':'Offices in this category'}</p>`;
-  $('x').onclick=()=>go('home');
- }else if(v==='detail'){
-  const o=OFFICES[st.off];
-  m.innerHTML=`<button class="back" data-back>← Back to results</button><p class="eyebrow">Office detail</p><h1>${esc(o.name)}</h1>
+ $('x').onclick=()=>{st.q='';st.cat=null;draw();goto('search')};
+ $('detail').innerHTML=`<p class="eyebrow">Office detail</p><h1>${esc(o.name)}</h1>
   <p class="loc"><span class="dot"></span>${esc(o.room)}</p>
   <div class="box">${esc(o.hours)}<br><a href="tel:${o.phone.replace(/[^\d+]/g,'')}" style="color:inherit">${esc(o.phone)}</a> - <a href="mailto:${o.email}" style="color:inherit">${esc(o.email)}</a></div>
-  <button class="guide" data-guide="${st.off}"><b>Related Guide</b>${esc(o.guide)} - 6 steps</button>
+  <button class="guide" data-guide="1"><b>Related Guide</b>${esc(o.guide)} - 6 steps</button>
   <button class="cta" id="dir">Get directions</button>`;
-  $('dir').onclick=()=>toast('Directions: head to '+o.room+'. Map view is not part of this prototype.');
- }else if(v==='guide'){
-  const o=OFFICES[st.off];
-  m.innerHTML=`<button class="back" data-back>← Back to office</button><p class="eyebrow">Guide</p><h1>${esc(o.guide)}</h1>
+ $('dir').onclick=()=>toast('Directions: head to '+o.room+'. Map view is not part of this prototype.');
+ $('guide').innerHTML=`<p class="eyebrow">Guide</p><h1>${esc(o.guide)}</h1>
   <ol class="steps">${STEPS.map(s=>`<li>${s}</li>`).join('')}</ol>
-  <button class="cta" data-off="${st.off}">View office</button>`;
- }
+  <button class="cta" data-go="detail">Back to office</button>`;
 }
-
 document.addEventListener('click',e=>{
- const t=e.target.closest('[data-go],[data-cat],[data-off],[data-guide],[data-back]');if(!t)return;
- if(t.dataset.go)go(t.dataset.go);
- else if(t.dataset.cat)go('results',{cat:t.dataset.cat});
- else if(t.dataset.off)go('detail',{off:t.dataset.off,cat:st.cat,q:st.q});
- else if(t.dataset.guide)go('guide',{off:t.dataset.guide});
- else if(t.hasAttribute('data-back'))history.back();
+ const t=e.target.closest('[data-go],[data-cat],[data-off],[data-guide]');if(!t)return;
+ if(t.dataset.go)goto(t.dataset.go);
+ else if(t.dataset.cat)pickCat(t.dataset.cat);
+ else if(t.dataset.off)pickOff(t.dataset.off);
+ else if(t.dataset.guide)goto('guide');
 });
 $('hs').addEventListener('keydown',e=>{if(e.key==='Enter'){search(e.target.value);e.target.value=''}});
 let tt;function toast(s){const t=$('toast');t.textContent=s;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,3500)}
-history.replaceState(st,'');render();
+draw();
 </script>
 </body>
 </html>
